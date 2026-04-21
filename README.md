@@ -1,3 +1,5 @@
+![Nythsleep Banner](assets/banner.png)
+
 # 🌙 Nythsleep — The Ultimate Windows 11 Power Management CLI
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
@@ -20,6 +22,8 @@ As a developer who lives in the terminal, I wanted something that felt right. A 
 - **Global Access**: Call it from any terminal (CMD or PowerShell).
 - **Multiple Actions**: Shutdown, Restart, Sleep, or Logout.
 
+![Nythsleep Demo](assets/demo.png)
+
 ---
 
 ## Quick Setup
@@ -31,7 +35,7 @@ As a developer who lives in the terminal, I wanted something that felt right. A 
    mkdir C:\Tools
    ```
 2. **Deploy the payload**:
-   Move `nythsleep.py` and `nythsleep.bat` to `C:\Tools`.
+   Move `src/main.py` and `scripts/run.bat` to `C:\Tools`. (Note: Rename `main.py` to `nythsleep.py` in your tools folder if you wish).
 3. **Go Global**:
    Add `C:\Tools` to your system **PATH**.
    *Pro Tip: Run this in PowerShell as Admin:*

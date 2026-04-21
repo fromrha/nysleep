@@ -23,7 +23,7 @@ P1 = "\033[38;2;200;140;255m"  # light lavender
 P2 = "\033[38;2;180;100;255m"  # soft purple
 P3 = "\033[38;2;160;70;255m"   # medium purple
 P4 = "\033[38;2;140;50;230m"   # deep purple
-P5 = "\033[38;2;120;30;210m"   # darker purple
+P5 = "\033[38;2;120;30;210m"   # darker purpleb
 P6 = "\033[38;2;100;20;190m"   # darkest purple
 
 # Accent colors
@@ -40,14 +40,14 @@ AUTHOR  = "NythSleep"
 
 # ── ASCII Banner ──────────────────────────────────────────────────────────────
 
+# ANSI Shadow Font: "NYTH SLEEP"
 BANNER = f"""
-{P1}{BOLD}  ::::    ::: :::   ::: ::::::::::: :::    :::  ::::::::  :::        :::::::::: :::::::::: :::::::::  
-{P2}  :+:+:   :+: :+:   :+:     :+:     :+:    :+: :+:    :+: :+:        :+:        :+:        :+:    :+: 
-{P3}  :+:+:+  +:+  +:+ +:+      +:+     +:+    +:+ +:+        +:+        +:+        +:+        +:+    +:+ 
-{P4}  +#+ +:+ +#+   +#++:       +#+     +#++:++#++ +#++:++#++ +#+        +#++:++#   +#++:++#   +#++:++#+  
-{P5}  +#+  +#+#+#    +#+        +#+     +#+    +#+        +#+ +#+        +#+        +#+        +#+        
-{P5}  #+#   #+#+#    #+#        #+#     #+#    #+# #+#    #+# #+#        #+#        #+#        #+#        
-{P6}  ###    ####    ###        ###     ###    ###  ########  ########## ########## ########## ###        {RESET}
+{P1}{BOLD}  ███╗   ██╗██╗   ██╗████████╗██╗  ██╗     ███████╗██╗     ███████╗███████╗██████╗ 
+{P2}  ████╗  ██║╚██╗ ██╔╝╚══██╔══╝██║  ██║     ██╔════╝██║     ██╔════╝██╔════╝██╔══██╗
+{P3}  ██╔██╗ ██║ ╚████╔╝    ██║   ███████║     ███████╗██║     █████╗  █████╗  ██████╔╝
+{P4}  ██║╚██╗██║  ╚██╔╝     ██║   ██╔══██║     ╚════██║██║     ██╔══╝  ██╔══╝  ██╔═══╝ 
+{P5}  ██║ ╚████║   ██║      ██║   ██║  ██║     ███████║███████╗███████╗███████╗██║     
+{P6}  ╚═╝  ╚═══╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝     ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝     {RESET}
 """
 
 def clear_screen():
@@ -235,25 +235,29 @@ def main():
         
     latest_version = check_for_update()
 
-    while True:
-        clear_screen()
-        print_banner(latest_version)
-        show_menu()
+    try:
+        while True:
+            clear_screen()
+            print_banner(latest_version)
+            show_menu()
 
-        choice = get_choice()
-        if choice == 0:
-            print(f"\n  {P2}Goodbye! Sweet dreams.{RESET}\n")
-            break
+            choice = get_choice()
+            if choice == 0:
+                print(f"\n  {P2}Goodbye! Sweet dreams.{RESET}\n")
+                break
 
-        action_name = ACTIONS[choice - 1][0]
-        timer_secs = get_timer()
+            action_name = ACTIONS[choice - 1][0]
+            timer_secs = get_timer()
 
-        if confirm(action_name, timer_secs):
-            countdown(timer_secs, action_name)
-            print(f"\n  {P4}{BOLD}Executing {action_name}...{RESET}\n")
-            execute_action(choice)
-            break
-        # else loop back to menu
+            if confirm(action_name, timer_secs):
+                countdown(timer_secs, action_name)
+                print(f"\n  {P4}{BOLD}Executing {action_name}...{RESET}\n")
+                execute_action(choice)
+                break
+            # else loop back to menu
+    except KeyboardInterrupt:
+        print(f"\n\n  {P2}Goodbye! Session ended.{RESET}\n")
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
