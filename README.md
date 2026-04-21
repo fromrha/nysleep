@@ -1,12 +1,12 @@
-# 🌙 NySleep
+# 🌙 Nythsleep — The Ultimate Windows 11 Power Management CLI
 
-[![GitHub License](https://img.shields.io/github/license/fromrha/nysleep?style=flat-square&color=blue)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/fromrha/nysleep?style=flat-square)](https://github.com/fromrha/nysleep/stargazers)
+[![GitHub License](https://img.shields.io/github/license/fromrha/nythsleep?style=flat-square&color=blue)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/fromrha/nythsleep?style=flat-square)](https://github.com/fromrha/nythsleep/stargazers)
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
 
 **Control your computer's rest as easily as you control your own.**
 
-NySleep is a lightweight, high-performance CLI utility for Windows 11 that gives you total control over power actions. No more digging through menus—just type `nysleep` and go to bed.
+Nythsleep is a lightweight, high-performance CLI utility for Windows 11 that gives you total control over power actions. No more digging through menus—just type `nythsleep` and go to bed.
 
 ---
 
@@ -29,7 +29,7 @@ NySleep is a lightweight, high-performance CLI utility for Windows 11 that gives
    mkdir C:\Tools
    ```
 2. **Deploy the payload**:
-   Move `nysleep.py` and `nysleep.bat` to `C:\Tools`.
+   Move `nythsleep.py` and `nythsleep.bat` to `C:\Tools`.
 3. **Go Global**:
    Add `C:\Tools` to your system **PATH**.
    *Pro Tip: Run this in PowerShell as Admin:*
@@ -43,7 +43,7 @@ NySleep is a lightweight, high-performance CLI utility for Windows 11 that gives
 
 Simply type:
 ```cmd
-nysleep
+nythsleep
 ```
 
 ### Timer Magic

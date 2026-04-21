@@ -1,9 +1,9 @@
 
 ================================================================================
-   NYSLEEP - GLOBAL CLI SETUP GUIDE (Windows 11)
+   NYTHSLEEP - GLOBAL CLI SETUP GUIDE (Windows 11)
 ================================================================================
 
-   This guide will let you type "nysleep" from anywhere in CMD or PowerShell.
+   This guide will let you type "nythsleep" from anywhere in CMD or PowerShell.
 
    PREREQUISITES:
    - Windows 11
@@ -20,20 +20,20 @@
 
         mkdir C:\Tools
 
-   2. Copy "nysleep.py" into that folder:
+   2. Copy "nythsleep.py" into that folder:
 
-        copy nysleep.py C:\Tools\nysleep.py
+        copy nythsleep.py C:\Tools\nythsleep.py
 
    3. Create a batch wrapper so Windows can find the command.
-      Create a file called "nysleep.bat" inside C:\Tools with this content:
+      Create a file called "nythsleep.bat" inside C:\Tools with this content:
 
         @echo off
-        python "C:\Tools\nysleep.py" %*
+        python "C:\Tools\nythsleep.py" %*
 
       You can create it quickly from CMD:
 
-        echo @echo off > C:\Tools\nysleep.bat
-        echo python "C:\Tools\nysleep.py" %%* >> C:\Tools\nysleep.bat
+        echo @echo off > C:\Tools\nythsleep.bat
+        echo python "C:\Tools\nythsleep.py" %%* >> C:\Tools\nythsleep.bat
 
    4. Add C:\Tools to your system PATH (one time only):
 
@@ -51,7 +51,7 @@
 
    5. Close and reopen any terminal. Then just type:
 
-        nysleep
+        nythsleep
 
       That's it! It works from anywhere now.
 
@@ -62,7 +62,7 @@
 
    If you only use PowerShell:
 
-   1. Place nysleep.py anywhere you like, e.g. C:\Tools\nysleep.py
+   1. Place nythsleep.py anywhere you like, e.g. C:\Tools\nythsleep.py
 
    2. Open your PowerShell profile:
 
@@ -75,9 +75,9 @@
 
    3. Add this line to the profile file:
 
-        function nysleep { python "C:\Tools\nysleep.py" @args }
+        function nythsleep { python "C:\Tools\nythsleep.py" @args }
 
-   4. Save, close, and restart PowerShell. Now "nysleep" works.
+   4. Save, close, and restart PowerShell. Now "nythsleep" works.
 
 
 ================================================================================
@@ -86,7 +86,7 @@
 
    Just type:
 
-       nysleep
+       nythsleep
 
    Then follow the on-screen prompts:
 
@@ -113,7 +113,7 @@
    "python is not recognized"
        -> Reinstall Python and check "Add to PATH", or manually add it.
 
-   "nysleep is not recognized"
+   "nythsleep is not recognized"
        -> Make sure C:\Tools is in your PATH and you restarted the terminal.
 
    Colors look broken
@@ -128,5 +128,5 @@
           Right-click your terminal and "Run as administrator".
 
 ================================================================================
-   Enjoy your rest!   - NySleep v1.0.0
+   Enjoy your rest!   - Nythsleep v1.0.0
 ================================================================================
