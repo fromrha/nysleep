@@ -4,9 +4,11 @@
 [![GitHub stars](https://img.shields.io/github/stars/fromrha/nythsleep?style=flat-square)](https://github.com/fromrha/nythsleep/stargazers)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg?style=flat-square&logo=python)](https://www.python.org/)
 
-**Control your computer's rest as easily as you control your own.**
+**Because a good night's sleep shouldn't end with a bright screen at 3 AM.**
 
-Nythsleep is a lightweight, high-performance CLI utility for Windows 11 that gives you total control over power actions. No more digging through menus—just type `nythsleep` and go to bed.
+I have a routine: I can't sleep without some ASMR or ambient music playing in the background. My computer serves as my speaker, but I hated leaving it running all night—and I hated the clunky, bright Windows menus even more. 
+
+As a developer who lives in the terminal, I wanted something that felt right. No UI clutter, just a sleek, purple-tinted command that does exactly what I need and nothing more. I built Nythsleep for myself, and now I'm sharing it with you.
 
 ---
 
