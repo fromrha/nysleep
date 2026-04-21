@@ -9,11 +9,14 @@ import sys
 import time
 import ctypes
 import subprocess
+import urllib.request
+import json
 
 # ── ANSI Color Codes ──────────────────────────────────────────────────────────
 RESET   = "\033[0m"
 BOLD    = "\033[1m"
 DIM     = "\033[2m"
+UNDERLINE = "\033[4m"
 
 # Purple gradient shades
 P1 = "\033[38;2;200;140;255m"  # light lavender
@@ -50,12 +53,29 @@ BANNER = f"""
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
-def print_banner():
+def print_banner(latest_version=None):
     print(BANNER)
     print(f"  {GRAY}{'─' * 104}{RESET}")
-    print(f"  {P2}{BOLD}{AUTHOR}{RESET} {GRAY}v{VERSION}{RESET}  {GRAY}|{RESET}  {WHITE}Windows Power Management Tool{RESET}  {GRAY}|{RESET}  {GRAY}{time.strftime('%Y-%m-%d')}{RESET}")
+    link = f"\033]8;;https://fromrha.com\033\\{UNDERLINE}fromrha.com{RESET}\033]8;;\033\\"
+    print(f"  {P2}{BOLD}{AUTHOR}{RESET} {GRAY}v{VERSION}{RESET}  {GRAY}|{RESET}  {WHITE}Windows Power Management Tool{RESET}  {GRAY}|{RESET}  {GRAY}{time.strftime('%Y-%m-%d')}{RESET}  {GRAY}|{RESET}  {P1}{link}{RESET}")
     print(f"  {GRAY}{'─' * 104}{RESET}")
+    if latest_version:
+        print(f"  {YELLOW}{BOLD}Update Available!{RESET} {WHITE}v{latest_version} is out. Download it from GitHub.{RESET}")
+        print(f"  {GRAY}{'─' * 104}{RESET}")
     print()
+
+def check_for_update():
+    try:
+        url = "https://api.github.com/repos/fromrha/nythsleep/releases/latest"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Nythsleep-Update-Checker'})
+        with urllib.request.urlopen(req, timeout=1.0) as response:
+            data = json.loads(response.read().decode())
+            latest_version = data.get("tag_name", VERSION).lstrip('v')
+            if latest_version != VERSION:
+                return latest_version
+    except Exception:
+        pass
+    return None
 
 # ── Menu ──────────────────────────────────────────────────────────────────────
 
@@ -212,10 +232,12 @@ def main():
     # Enable ANSI on Windows
     if os.name == "nt":
         os.system("")  # enables VT100 escape sequences in cmd/powershell
+        
+    latest_version = check_for_update()
 
     while True:
         clear_screen()
-        print_banner()
+        print_banner(latest_version)
         show_menu()
 
         choice = get_choice()
