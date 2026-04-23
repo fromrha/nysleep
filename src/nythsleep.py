@@ -198,6 +198,34 @@ def set_insomnia_mode(enable: bool):
         else:
             ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
+def run_insomnia_loop(latest_version=None):
+    clear_screen()
+    print_banner(latest_version)
+    print(f"  {YELLOW}{BOLD}Insomnia Mode Active{RESET}")
+    print(f"  {GRAY}{'─' * 104}{RESET}")
+    print(f"  {WHITE}System and screen are now being kept awake.{RESET}")
+    print(f"  {GRAY}Press {RESET}{RED}{BOLD}Ctrl+C{RESET}{GRAY} to stop and exit.{RESET}\n")
+    
+    start_time = time.time()
+    try:
+        while True:
+            elapsed = int(time.time() - start_time)
+            h = elapsed // 3600
+            m = (elapsed % 3600) // 60
+            s = elapsed % 60
+            
+            # Pulsing effect
+            dot = f"{P2}●{RESET}" if s % 2 == 0 else f"{GRAY}○{RESET}"
+            
+            line = f"\r  {dot}  {WHITE}Elapsed Time:{RESET} {CYAN}{h:02d}:{m:02d}:{s:02d}{RESET}  "
+            sys.stdout.write(line)
+            sys.stdout.flush()
+            time.sleep(1)
+    except KeyboardInterrupt:
+        set_insomnia_mode(False)
+        print(f"\n\n  {P2}Insomnia mode disabled. Goodbye!{RESET}\n")
+        sys.exit(0)
+
 class SYSTEM_POWER_STATUS(ctypes.Structure):
     _fields_ = [
         ("ACLineStatus", ctypes.c_byte),
@@ -369,8 +397,8 @@ def main():
 
     if args.insomnia:
         set_insomnia_mode(True)
-        print(f"  {YELLOW}{BOLD}Insomnia Mode Enabled:{RESET} {WHITE}Screen and system will stay awake.{RESET}")
-        time.sleep(1)
+        if choice == 0:
+            run_insomnia_loop(latest_version)
 
     try:
         # If an action flag was passed, bypass the menu
