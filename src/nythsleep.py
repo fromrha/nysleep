@@ -198,10 +198,15 @@ def set_insomnia_mode(enable: bool):
         else:
             ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
-def run_insomnia_loop(latest_version=None):
+def run_insomnia_loop(latest_version=None, duration_secs=0):
     clear_screen()
     print_banner(latest_version)
-    print(f"  {YELLOW}{BOLD}Insomnia Mode Active{RESET}")
+    
+    status_text = f"{YELLOW}{BOLD}Active Indefinitely{RESET}"
+    if duration_secs > 0:
+        status_text = f"{YELLOW}{BOLD}Active for {format_duration(duration_secs)}{RESET}"
+
+    print(f"  {status_text}")
     print(f"  {GRAY}{'─' * 104}{RESET}")
     print(f"  {WHITE}System and screen are now being kept awake.{RESET}")
     print(f"  {GRAY}Press {RESET}{RED}{BOLD}Ctrl+C{RESET}{GRAY} to stop and exit.{RESET}\n")
@@ -210,17 +215,31 @@ def run_insomnia_loop(latest_version=None):
     try:
         while True:
             elapsed = int(time.time() - start_time)
-            h = elapsed // 3600
-            m = (elapsed % 3600) // 60
-            s = elapsed % 60
+            
+            if duration_secs > 0:
+                remaining = duration_secs - elapsed
+                if remaining <= 0:
+                    print(f"\n\n  {GREEN}Insomnia timer finished. System can now sleep.{RESET}")
+                    break
+                h, m, s = remaining // 3600, (remaining % 3600) // 60, remaining % 60
+                label = "Time Remaining:"
+                time_str = f"{RED}{h:02d}:{m:02d}:{s:02d}{RESET}"
+            else:
+                h, m, s = elapsed // 3600, (elapsed % 3600) // 60, elapsed % 60
+                label = "Elapsed Time:"
+                time_str = f"{CYAN}{h:02d}:{m:02d}:{s:02d}{RESET}"
             
             # Pulsing effect
-            dot = f"{P2}●{RESET}" if s % 2 == 0 else f"{GRAY}○{RESET}"
+            dot = f"{P2}●{RESET}" if elapsed % 2 == 0 else f"{GRAY}○{RESET}"
             
-            line = f"\r  {dot}  {WHITE}Elapsed Time:{RESET} {CYAN}{h:02d}:{m:02d}:{s:02d}{RESET}  "
+            line = f"\r  {dot}  {WHITE}{label}{RESET} {time_str}  "
             sys.stdout.write(line)
             sys.stdout.flush()
             time.sleep(1)
+            
+        set_insomnia_mode(False)
+        print(f"\n  {P2}Goodbye!{RESET}\n")
+        sys.exit(0)
     except KeyboardInterrupt:
         set_insomnia_mode(False)
         print(f"\n\n  {P2}Insomnia mode disabled. Goodbye!{RESET}\n")
@@ -396,9 +415,19 @@ def main():
         set_theme(args.theme)
 
     if args.insomnia:
+        # Validate timer if provided
+        timer_secs = 0
+        if args.timer:
+            timer_secs = parse_timer(args.timer)
+            if timer_secs < 0:
+                print(f"\n  {RED}{BOLD}Error:{RESET} {WHITE}Invalid timer format '{args.timer}'.{RESET}")
+                print(f"  {GRAY}Please use units: {RESET}{CYAN}h{RESET}{GRAY} (hours), {RESET}{CYAN}m{RESET}{GRAY} (minutes), or {RESET}{CYAN}s{RESET}{GRAY} (seconds).{RESET}")
+                print(f"  {GRAY}Example: {RESET}{GREEN}nsleep -i -t 30m{RESET}\n")
+                return
+
         set_insomnia_mode(True)
         if choice == 0:
-            run_insomnia_loop(latest_version)
+            run_insomnia_loop(latest_version, timer_secs)
 
     try:
         # If an action flag was passed, bypass the menu

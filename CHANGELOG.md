@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+### Added
+- Dedicated interactive loop for Insomnia Mode (`-i`) with elapsed time/countdown display.
+
+### Fixed
+- Improved strict validation for timer inputs (`-t`), ensuring units (`h`, `m`, `s`) are provided.
+
 ## [1.2.0] - 2026-04-22
 
 ### Added
