@@ -47,7 +47,8 @@ As a developer who lives in the terminal, I wanted something that felt right. A 
 ---
 
 ### CLI Flags (Pro Features)
-You can now bypass the menu entirely using flags:
+You can now bypass the interactive menu entirely using flags.
+**Pro Tip:** Use the `nsleep` quick-command alias for even faster execution without any confirmation prompts!
 
 | Flag | Action |
 | :--- | :--- |
@@ -60,9 +61,10 @@ You can now bypass the menu entirely using flags:
 | `-b`, `--battery` | Trigger at battery % (e.g. `-b 20`) |
 | `--theme` | Select theme (`midnight`, `sunset`, `forest`) |
 
-**Example:**
+**Examples:**
 ```cmd
-nythsleep --theme sunset --timer 30m --sleep
+nsleep -s -t 20m
+nsleep --theme sunset --sleep -t 30m
 ```
 
 ---

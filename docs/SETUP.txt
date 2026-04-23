@@ -95,7 +95,8 @@
         3. Confirm or go back
 
     PRO FEATURES (CLI FLAGS):
-    You can now skip the menu entirely:
+    You can now skip the menu entirely using 'nythsleep' with flags, or use 
+    the 'nsleep' quick command to skip both the menu AND the confirmation step.
     
         -s, --shutdown        Shutdown
         -r, --restart         Restart
@@ -105,6 +106,10 @@
         -i, --insomnia        Keep machine awake
         -b, --battery [val]   Trigger at battery %
         --theme [name]        Change theme (midnight, sunset, forest)
+
+    QUICK COMMAND EXAMPLES:
+        nsleep -s -t 20m
+        nsleep -z -t 1h 30m --theme sunset
 
     TIMER FORMAT EXAMPLES:
         1h          = 1 hour

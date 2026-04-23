@@ -300,7 +300,7 @@ def execute_action(choice: int):
 
 # ── Confirmation ──────────────────────────────────────────────────────────────
 
-def confirm(action_name: str, timer_secs: int, battery_target: int = None) -> bool:
+def confirm(action_name: str, timer_secs: int, battery_target: int = None, auto_confirm: bool = False) -> bool:
     color = {"Shutdown": CYAN, "Restart": GREEN, "Sleep": YELLOW, "Logout": PINK}[action_name]
 
     print(f"\n  {GRAY}{'─' * 50}{RESET}")
@@ -312,6 +312,10 @@ def confirm(action_name: str, timer_secs: int, battery_target: int = None) -> bo
         print(f"    {WHITE}Battery:{RESET}  {YELLOW}Wait until {battery_target}%{RESET}")
     print(f"  {GRAY}{'─' * 50}{RESET}")
     print()
+
+    if auto_confirm:
+        return True
+
     print(f"    {GREEN}{BOLD}[Y]{RESET} {WHITE}Run{RESET}        {RED}{BOLD}[N]{RESET} {WHITE}Go back{RESET}")
     print()
 
@@ -379,9 +383,8 @@ def main():
                 return
                 
             clear_screen()
-            print_banner(latest_version)
             
-            if confirm(action_name, timer_secs, args.battery):
+            if confirm(action_name, timer_secs, args.battery, auto_confirm=True):
                 if args.battery:
                     wait_for_battery(args.battery, action_name)
                 countdown(timer_secs, action_name)
