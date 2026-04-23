@@ -414,6 +414,14 @@ def main():
     if args.theme:
         set_theme(args.theme)
 
+    # Validate that modifiers (-t, -b) are paired with an action or insomnia mode
+    if choice == 0 and not args.insomnia:
+        if args.timer or args.battery is not None:
+            print(f"\n  {RED}{BOLD}Error:{RESET} {WHITE}Modifiers like -t/--timer and -b/--battery require an action flag.{RESET}")
+            print(f"  {GRAY}Please specify an action: -s (Shutdown), -r (Restart), -z (Sleep), or -l (Logout).{RESET}")
+            print(f"  {GRAY}Example: {RESET}{GREEN}nsleep -s -b 15{RESET}\n")
+            return
+
     if args.insomnia:
         # Validate timer if provided
         timer_secs = 0
