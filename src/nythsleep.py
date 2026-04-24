@@ -391,6 +391,10 @@ class CustomArgumentParser(argparse.ArgumentParser):
         elif "invalid int value" in message and "-b/--battery" in message:
             print(f"  {GRAY}The -b flag expects a plain number without the % sign.{RESET}")
             print(f"  {GRAY}Example: {RESET}{GREEN}nsleep -s -b 20{RESET}\n")
+        elif "--theme" in message and "expected one argument" in message:
+            print(f"  {GRAY}The --theme flag requires a theme name.{RESET}")
+            print(f"  {GRAY}Available themes: {RESET}{GREEN}lavender, midnight, sunset, forest{RESET}")
+            print(f"  {GRAY}Example: {RESET}{GREEN}nsleep --theme sunset{RESET}\n")
         else:
             print(f"  {GRAY}Run nsleep -h for full usage instructions.{RESET}\n")
         sys.exit(2)
