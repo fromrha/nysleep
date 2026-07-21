@@ -1,39 +1,25 @@
 @echo off
 setlocal
-set "TARGET_DIR=%~dp0"
-:: Remove trailing backslash if present
-if "%TARGET_DIR:~-1%"=="\" set "TARGET_DIR=%TARGET_DIR:~0,-1%"
 
-echo ======================================================
-echo          🌙 Nythsleep One-Click Setup 🌙
-echo ======================================================
-echo.
-echo This script will add the Nythsleep folder to your PATH
-echo so you can run 'nythsleep' or 'nsleep' from anywhere.
+echo ================================================
+echo           Nythsleep Global Setup
+echo ================================================
 echo.
 
-:: Check for Python
-python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [!] WARNING: Python was not found on your system.
-    echo Please install Python 3.8+ before using Nythsleep.
-    echo.
+where pipx >nul 2>&1
+if errorlevel 1 (
+    echo [!] pipx was not found.
+    echo Install Python 3.9+ first, then run:
+    echo     py -m pip install --user pipx
+    echo     py -m pipx ensurepath
+    exit /b 1
 )
 
-:: Use PowerShell to update PATH safely (no 1024 char limit like setx)
-powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    "$p='%TARGET_DIR%'; $u=[Environment]::GetEnvironmentVariable('Path','User'); ^
-    if ($u -split ';' -notcontains $p) { ^
-        if ($u -and -not $u.EndsWith(';')) { $u += ';' }; ^
-        [Environment]::SetEnvironmentVariable('Path', $u + $p, 'User'); ^
-        Write-Host '[+] Successfully added to User PATH!' -ForegroundColor Green; ^
-        Write-Host '    You can now use nsleep or nythsleep from any NEW terminal window.' -ForegroundColor Green; ^
-    } else { ^
-        Write-Host '[i] Nythsleep is already in your PATH.' -ForegroundColor Cyan; ^
-    }"
+pipx install "%~dp0" --force
+if errorlevel 1 exit /b 1
+pipx ensurepath
 
 echo.
-echo ======================================================
-echo Setup Complete! Press any key to exit.
-echo ======================================================
-pause >nul
+echo [+] Nythsleep installed. Open a new terminal, then run:
+echo     nythsleep --help
+pause

@@ -1,97 +1,95 @@
 ![Nythsleep Banner](assets/banner.png)
 
-# 🌙 Nythsleep — The Ultimate Windows 11 Power Management CLI
+# Nythsleep
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/fromrha/nythsleep?style=flat-square)](https://github.com/fromrha/nythsleep/stargazers)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg?style=flat-square&logo=python)](https://www.python.org/)
+Cross-platform terminal power management. Schedule shutdown, restart, sleep,
+logout, battery-triggered actions, or temporary Keep Awake mode.
 
-**Because a good night's sleep shouldn't end with a bright screen at 3 AM.**
+## Supported systems
 
-I have a routine: I can't sleep without some ASMR or ambient music playing in the background. My computer serves as my speaker, but I hated leaving it running all night—and I hated the clunky, bright Windows menus even more. 
+| System | Actions | Keep Awake | Battery | Notifications |
+| --- | --- | --- | --- | --- |
+| Windows 10/11 | Yes | Yes | Yes | Yes |
+| Linux with systemd | Yes | Yes | Yes | Yes, with `notify-send` |
+| macOS | Yes | Yes | Yes | Yes |
 
-As a developer who lives in the terminal, I wanted something that felt right. A sleek, purple-tinted command that does exactly what I need and nothing more. I built Nythsleep for myself, and now I'm sharing it with you.
+Linux support is session-manager neutral. Nythsleep uses systemd `loginctl` and
+`systemd-inhibit`, so it works with KDE, GNOME, Hyprland, and other graphical
+sessions. Logout only targets current active graphical session; it refuses
+ambiguous or non-graphical sessions.
 
----
+## Install globally
 
-## Features
+Use [`pipx`](https://pipx.pypa.io/). It installs isolated executable shims and
+keeps `nythsleep` plus `nsleep` available globally without administrator access.
 
-- **Lightning Fast**: Execute power commands in seconds.
-- **Custom Timers**: Set precision timers (e.g., `1h 30m`) for automatic actions.
-- **Premium Themes**: Choose between `Lavender`, `Midnight`, `Sunset`, and `Forest`.
-- **Insomnia Mode**: Keep your machine awake when you need it most.
-- **Battery Triggers**: Trigger actions automatically at specific battery levels.
-- **Smart Notifications**: Native Windows notifications 60s before any action.
-- **Global Access**: Call it from any terminal with full flag support.
-
-![Nythsleep Demo](assets/demo.png)
-
----
-
-## Quick Setup
-
-### 🚀 The Easiest Way (Recommended)
-1. **Clone the repository**:
-   ```cmd
-   git clone https://github.com/fromrha/nythsleep.git
-   ```
-2. **Run the setup**:
-   Double-click `setup.bat` in the project folder. That's it! 
-   *(This automatically adds Nythsleep to your PATH safely via PowerShell)*
-
----
-
-### 🛠️ The Manual Way (Pro)
-If you prefer doing things manually:
-1. Add the cloned repository directory to your system **PATH**.
-2. *Pro Tip: Run this in PowerShell as Admin (replace `C:\path\to\nythsleep` with your actual path):*
-   ```powershell
-   $targetPath = "C:\path\to\nythsleep"
-   [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "Machine") + ";$targetPath", "Machine")
-   ```
-
----
-
-### CLI Flags (Pro Features)
-You can now bypass the interactive menu entirely using flags.
-**Pro Tip:** Use the `nsleep` quick-command alias for even faster execution without any confirmation prompts!
-
-| Flag | Action |
-| :--- | :--- |
-| `-s`, `--shutdown` | Power off completely |
-| `-r`, `--restart` | Reboot machine |
-| `-z`, `--sleep` | Put to sleep |
-| `-l`, `--logout` | Sign out |
-| `-t`, `--timer` | Set a timer (e.g. `-t 1h 30m`) |
-| `-i`, `--insomnia` | Enable "Keep Awake" mode |
-| `-b`, `--battery` | Trigger at battery % (e.g. `-b 20`) |
-| `--theme` | Select theme (`lavender (default)`, `midnight`, `sunset`, `forest`) |
-
-**Examples:**
-```cmd
-nsleep -s -t 20m
-nsleep --theme sunset --sleep -t 30m
+```bash
+pipx install git+https://github.com/fromrha/nythsleep.git
+pipx ensurepath
 ```
 
----
+Open new terminal after `pipx ensurepath`. It adds pipx executable directory to
+user `PATH`; then run:
 
-## Troubleshooting
+```bash
+nythsleep --help
+nsleep --version
+```
 
-- **Python not found?** Ensure Python 3.8+ is installed and in your PATH.
-- **Access Denied?** Some actions require Administrator privileges.
-- **Visuals Glitchy?** We recommend using [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701) for the best experience.
+Install local clone while developing:
 
----
+```bash
+pipx install . --force
+pipx ensurepath
+```
 
-## Credits
+Windows batch wrappers remain for existing clones. New installs should use
+`pipx` on every supported OS.
 
-Crafted with ❤️ by **Fromrha 2026**.
+### Linux packages
 
-🔗 **GitHub**: [github.com/fromrha](https://github.com/fromrha)  
-🌐 **Website**: [fromrha.com](https://fromrha.com)
+CachyOS/Arch includes required `loginctl` and `systemd-inhibit` through systemd.
+Install `libnotify` for desktop notifications:
 
----
+```bash
+sudo pacman -S libnotify python-pipx
+```
+
+## Usage
+
+```bash
+nythsleep                    # interactive mode
+nythsleep --sleep -t 30m     # confirm, then sleep in 30 minutes
+nythsleep --shutdown -b 15   # confirm, then shut down at 15% battery
+nythsleep --insomnia -t 2h   # keep system awake for two hours
+nythsleep --restart --yes    # unattended restart: no prompt
+```
+
+### Actions
+
+| Flag | Meaning |
+| --- | --- |
+| `-s`, `--shutdown` | Power off |
+| `-r`, `--restart` | Reboot |
+| `-z`, `--sleep` | Suspend |
+| `-l`, `--logout` | Sign out current graphical session |
+| `-t`, `--timer` | Timer: `1h 30m`, `45m`, `10s` |
+| `-i`, `--insomnia` | Keep Awake mode; accepts `--timer` |
+| `-b`, `--battery` | Trigger action at `1` through `100` percent |
+| `-y`, `--yes` | Skip destructive-action confirmation |
+| `--theme` | `lavender`, `midnight`, `sunset`, `forest` |
+
+> [!WARNING]
+> Power actions can discard unsaved work. Flags now prompt for confirmation.
+> Use `--yes` only in deliberate unattended scripts.
+
+## Development
+
+```bash
+python -m unittest discover -s tests -v
+python -m py_compile src/nythsleep.py src/platforms.py
+```
 
 ## License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+MIT. See [LICENSE](LICENSE).

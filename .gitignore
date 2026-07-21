@@ -12,3 +12,6 @@ ENV/
 .idea/
 *.log
 .gemini/
+build/
+dist/
+*.egg-info/

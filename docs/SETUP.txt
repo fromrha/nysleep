@@ -1,149 +1,51 @@
+NYTHSLEEP - GLOBAL CLI SETUP
+=============================
 
-================================================================================
-   NYTHSLEEP - GLOBAL CLI SETUP GUIDE (Windows 11)
-================================================================================
+Supported: Windows 10/11, Linux distributions using systemd, macOS.
+Requires Python 3.9+ and pipx.
 
-   This guide will let you type "nythsleep" from anywhere in CMD or PowerShell.
+INSTALL
+-------
 
-   PREREQUISITES:
-   - Windows 11
-   - Python 3.8+ installed and added to PATH
-     (Download from https://python.org if you don't have it)
-     Tip: During install, CHECK "Add Python to PATH"
+From a clone:
 
+    pipx install . --force
+    pipx ensurepath
 
-================================================================================
-   METHOD 1  -  QUICK SETUP (recommended)
-================================================================================
+From GitHub:
 
-   1. Create a folder for your custom tools (only once):
+    pipx install git+https://github.com/fromrha/nythsleep.git
+    pipx ensurepath
 
-        mkdir C:\Tools
+`pipx ensurepath` automatically adds pipx executable directory to current user
+PATH. Close and reopen terminal after running it. Then commands work globally:
 
-   2. Copy "nythsleep.py" into that folder:
+    nythsleep --help
+    nsleep --version
 
-        copy nythsleep.py C:\Tools\nythsleep.py
+CACHYOS / ARCH NOTIFICATIONS
+----------------------------
 
-   3. Create a batch wrapper so Windows can find the command.
-      Create a file called "nythsleep.bat" inside C:\Tools with this content:
+    sudo pacman -S libnotify python-pipx
 
-        @echo off
-        python "C:\Tools\nythsleep.py" %*
+`loginctl` and `systemd-inhibit` come from systemd and provide Linux power and
+Keep Awake integration. Nythsleep is not tied to KDE; any active graphical
+systemd session works.
 
-      You can create it quickly from CMD:
+USAGE
+-----
 
-        echo @echo off > C:\Tools\nythsleep.bat
-        echo python "C:\Tools\nythsleep.py" %%* >> C:\Tools\nythsleep.bat
+    nythsleep
+    nythsleep --sleep --timer 30m
+    nythsleep --shutdown --battery 15
+    nythsleep --insomnia --timer 2h
+    nythsleep --restart --yes
 
-   4. Add C:\Tools to your system PATH (one time only):
+Power actions prompt by default. `--yes` skips prompt for deliberate unattended
+scripts. Ctrl+C cancels countdowns and battery waits.
 
-      Option A - Via GUI:
-        - Press Win + S, search "Environment Variables"
-        - Click "Edit the system environment variables"
-        - Click "Environment Variables..." button
-        - Under "System variables", find "Path" and click "Edit"
-        - Click "New" and type:  C:\Tools
-        - Click OK on all dialogs
+LEGACY WINDOWS WRAPPERS
+-----------------------
 
-      Option B - Via PowerShell (run as Administrator):
-
-        [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Tools", "Machine")
-
-   5. Close and reopen any terminal. Then just type:
-
-        nythsleep
-
-      That's it! It works from anywhere now.
-
-
-================================================================================
-   METHOD 2  -  POWERSHELL ALIAS (per-user, no admin needed)
-================================================================================
-
-   If you only use PowerShell:
-
-   1. Place nythsleep.py anywhere you like, e.g. C:\Tools\nythsleep.py
-
-   2. Open your PowerShell profile:
-
-        notepad $PROFILE
-
-      If the file doesn't exist, create it:
-
-        New-Item -Path $PROFILE -ItemType File -Force
-        notepad $PROFILE
-
-   3. Add this line to the profile file:
-
-        function nythsleep { python "C:\Tools\nythsleep.py" @args }
-
-   4. Save, close, and restart PowerShell. Now "nythsleep" works.
-
-
-================================================================================
-   USAGE
-================================================================================
-
-    Just type:
-
-        nythsleep
-
-    Then follow the on-screen prompts:
-
-        1. Pick an action  (Shutdown / Restart / Sleep / Logout)
-        2. Set a timer     (examples below)
-        3. Confirm or go back
-
-    PRO FEATURES (CLI FLAGS):
-    You can now skip the menu entirely using 'nythsleep' with flags, or use 
-    the 'nsleep' quick command to skip both the menu AND the confirmation step.
-    
-        -s, --shutdown        Shutdown
-        -r, --restart         Restart
-        -z, --sleep           Sleep
-        -l, --logout          Logout
-        -t, --timer [time]    Set timer
-        -i, --insomnia        Keep machine awake
-        -b, --battery [val]   Trigger at battery %
-        --theme [name]        Change theme (midnight, sunset, forest)
-
-    QUICK COMMAND EXAMPLES:
-        nsleep -s -t 20m
-        nsleep -z -t 1h 30m --theme sunset
-
-    TIMER FORMAT EXAMPLES:
-        1h          = 1 hour
-        30m         = 30 minutes
-        90s         = 90 seconds
-        1h 30m      = 1 hour 30 minutes
-        2h 15m 30s  = 2 hours 15 minutes 30 seconds
-        (Enter)     = immediately (no timer)
-
-   CANCEL DURING COUNTDOWN:
-       Press Ctrl+C at any time to abort.
-
-
-================================================================================
-   TROUBLESHOOTING
-================================================================================
-
-   "python is not recognized"
-       -> Reinstall Python and check "Add to PATH", or manually add it.
-
-   "nythsleep is not recognized"
-       -> Make sure C:\Tools is in your PATH and you restarted the terminal.
-
-   Colors look broken
-       -> Use Windows Terminal (recommended) or enable VT100 in CMD:
-          reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1
-
-   Sleep doesn't work
-       -> Some PCs have sleep disabled. Check Power Settings.
-
-   Need admin rights
-       -> Shutdown/restart/logout may need elevated privileges.
-          Right-click your terminal and "Run as administrator".
-
-================================================================================
-   Enjoy your rest!   - Nythsleep v1.2.0
-================================================================================
+`nythsleep.bat` and `nsleep.bat` remain for clone-based Windows use. New installs
+should prefer pipx because it exposes both commands globally on every OS.

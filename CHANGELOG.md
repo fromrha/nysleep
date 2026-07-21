@@ -2,10 +2,21 @@
 
 ## [Unreleased]
 ### Added
+- Cross-platform power backends for Windows, systemd Linux, and macOS.
+- Global `pipx` installation with `nythsleep` and `nsleep` commands.
+- Linux Keep Awake, battery monitoring, desktop notifications, and safe graphical-session logout.
+- `--yes` for deliberate unattended power actions.
+- Standard-library regression tests for timer parsing and Linux behavior.
 - Dedicated interactive loop for Insomnia Mode (`-i`) with elapsed time/countdown display.
 - One-click `setup.bat` script for automatic PATH configuration on Windows.
 
+### Changed
+- Power action flags now require confirmation unless `--yes` is given.
+- Global setup uses `pipx ensurepath` to add command directory to user PATH.
+
 ### Fixed
+- Reject invalid battery thresholds outside `1..100`.
+- Reject incompatible `--insomnia` and power-action combinations.
 - Improved strict validation for timer inputs (`-t`), ensuring units (`h`, `m`, `s`) are provided.
 
 ## [1.2.0] - 2026-04-22
