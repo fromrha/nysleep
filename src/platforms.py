@@ -169,7 +169,8 @@ class LinuxPlatform(PowerPlatform):
         if choice == 4:
             self.run([self.require_command("loginctl"), "terminate-session", self._current_graphical_session()])
             return
-        self._loginctl(actions[choice])
+        self.run([self.require_command("systemctl"), actions[choice]])
+
 
 
 class MacOSPlatform(PowerPlatform):
